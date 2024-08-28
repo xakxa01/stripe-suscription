@@ -5,7 +5,7 @@ export const POST = async (req) => {
 	const { priceId } = await req.json();
 
 	const stripe = new Stripe(process.env.STRIPE_API_SECRET)
-	const rootUrl = "http://localhost:3000"
+	const rootUrl = process.env.WEBSITE_URL || "http://localhost:3000"
 
 	const session = await stripe.checkout.sessions.create({
 		mode: "subscription",
@@ -15,7 +15,7 @@ export const POST = async (req) => {
 			quantity: 1,
 		}],
 		success_url: `${rootUrl}/success`,
-		cancel_url: `${rootUrl}/pricing`,
+		cancel_url: `${rootUrl}/`,
 	})
 
 	return NextResponse.json(session)
